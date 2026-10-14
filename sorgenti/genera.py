@@ -22,7 +22,7 @@ AGGIORNATO_ESTESO = '14 ottobre 2026'
 # GA4_ID è l'identificativo di misurazione (G-XXXXXXXXXX), EMAIL_PRIVACY l'indirizzo pubblicato
 # nell'informativa per l'esercizio dei diritti. Con uno dei due vuoti il sito resta senza cookie.
 GA4_ID = 'G-DYRBV8HWTK'
-EMAIL_PRIVACY = ''
+EMAIL_PRIVACY = 'ginopn76@gmail.com'
 STATISTICHE = bool(GA4_ID and EMAIL_PRIVACY)
 assert not GA4_ID or re.fullmatch(r'G-[A-Z0-9]{4,16}', GA4_ID), 'GA4_ID non valido'
 RADICE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
