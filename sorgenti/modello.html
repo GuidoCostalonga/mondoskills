@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="it">
+<head>
+__TESTA__
+</head>
+<body>
+__NOSCRIPT__
+
+
+<header class="barra gutter">
+  <div class="interno">
+    <a class="marchio" href="#catalogo"><img src="/sigillo.png" alt="Il volto del logo MondoSkills" width="50" height="56"><span><b>MondoSkills</b><small>Catalogo delle skill per l'IA</small></span></a>
+    <nav aria-label="Sezioni">
+      <a class="voce" href="#categorie">Categorie</a>
+      <a class="voce" href="#fonti">Fonti</a>
+      <a class="voce" href="#metodo">Metodo</a>
+      <a class="voce" href="#avvertenze">Avvertenze</a>
+      <a class="voce--piena" href="#catalogo">Cerca</a>
+    </nav>
+  </div>
+</header>
+
+<div class="nastro" aria-hidden="true"><p id="nastro1"></p></div>
+
+<section class="apertura gutter">
+  <div class="interno testa">
+    <span class="aggiornato">Aggiornato al 14 ottobre 2026</span>
+    <div class="logo-tondo"><img src="/logo.png" alt="Logo MondoSkills.it: ritratto a fumetto con occhiali e barba, pollici in su, davanti a un mappamondo con ingranaggi e lampadine" width="800" height="600"></div>
+    <h1>Trova la skill giusta per Claude e ChatGPT</h1>
+    <p class="sottotitolo">Copiala e installala</p>
+    <p class="sotto">Il catalogo unificato delle skill per Claude e ChatGPT: <strong id="tot-testo">7.600</strong> voci schedate con categoria, destinatari, costo, licenza e compatibilità. Per ognuna c'è il testo pronto da incollare nell'assistente per installarla.</p>
+    <a class="grosso" href="#catalogo">Cerca una skill</a>
+    <div class="timbri">
+      <span class="timbro">Claude</span><span class="timbro">ChatGPT</span><span class="timbro">Codex</span><span class="timbro">Copilot</span><span class="timbro">Gemini</span><span class="timbro">Cursor</span>
+    </div>
+  </div>
+  <div class="interno numeri" id="numeri"></div>
+</section>
+
+
+<section class="sezione sezione--scura gutter" id="categorie">
+  <div class="interno">
+    <h2 class="sezione__titolo">Le categorie</h2>
+    <p class="sezione__nota">Tocca una barra per filtrare il catalogo</p>
+    <p class="sezione__sotto">Numero di skill per categoria, sull'intero elenco.</p>
+    <div class="barre" id="barre"></div>
+    <nav class="pagine-cat" aria-label="Pagine delle categorie"><h3>Le pagine delle categorie</h3>__LINK_CATEGORIE__</nav>
+  </div>
+</section>
+
+<section class="gutter" id="catalogo">
+  <div class="interno catalogo">
+    <aside class="filtri" id="filtri" aria-label="Filtri">
+      <div class="filtri__testa"><h2>Filtri</h2><button type="button" id="azzera">Azzera tutto</button><button type="button" class="filtri__chiudi" id="chiudi-filtri">Mostra risultati</button></div>
+      <div id="gruppi"></div>
+    </aside>
+    <div class="risultati">
+      <div class="cerca"><label for="q">Cerca</label><input id="q" type="search" placeholder="Nome, descrizione, ambito, norma, autore…" autocomplete="off"></div>
+      <div class="comandi">
+        <button type="button" class="grosso apri-filtri" id="apri-filtri" style="padding:6px 14px;font-size:1.1rem">Filtri</button>
+        <div class="rapidi" id="rapidi"></div>
+        <div class="ordina"><label for="ordina">Ordina</label><select id="ordina">
+          <option value="nome">Nome, dalla A alla Z</option>
+          <option value="stelle">Stelle GitHub, prima le più alte</option>
+          <option value="data">Aggiornamento più recente</option>
+          <option value="voto">Valutazione GPT più alta</option>
+          <option value="conv">Più conversazioni GPT</option>
+          <option value="cat">Categoria</option>
+        </select></div>
+      </div>
+      <div class="conteggio" id="conteggio" aria-live="polite"></div>
+      <div class="attivi-riga" id="attivi"></div>
+      <div class="griglia" id="griglia"><div class="vuoto" style="grid-column:1/-1"><div><h3>Caricamento del catalogo</h3><p>Sto preparando le 7.600 skill: ci vuole un attimo.</p></div></div></div>
+      <div class="altre"><button type="button" class="grosso" id="altre">Mostra altre skill</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="sezione sezione--rosa gutter" id="fonti">
+  <div class="interno">
+    <h2 class="sezione__titolo">Fonti e raccolte</h2>
+    <p class="sezione__nota">Tocca un'intestazione per ordinare, una riga per filtrare</p>
+    <p class="sezione__sotto">Le raccolte da cui provengono le skill, con stelle GitHub e data dell'ultimo aggiornamento. In fondo, le directory e le specifiche usate come riferimento.</p>
+    <div class="tabella-box"><table id="tab-fonti"></table></div>
+  </div>
+</section>
+
+<section class="sezione gutter" id="metodo">
+  <div class="interno">
+    <h2 class="sezione__titolo">Legenda e metodo</h2>
+    <p class="sezione__sotto">Come sono costruiti i dati. I testi di installazione sono generati dalla dashboard a partire dal collegamento di ogni skill: prima di installare una skill di terzi, leggine il contenuto.</p>
+    <div class="legenda" id="legenda"></div>
+  </div>
+</section>
+
+<section class="sezione sezione--rosa gutter" id="chatgpt">
+  <div class="interno">
+    <h2 class="sezione__titolo">Installare una skill su ChatGPT</h2>
+    <p class="sezione__nota">Perché non basta incollare un testo</p>
+    <p class="sezione__sotto">Con Claude Code, Cowork e Codex il testo copiato dalla dashboard installa davvero la skill: l'assistente scarica la cartella e la salva dove deve stare. Con ChatGPT, nella normale chat, questo non succede. Ecco perché e come fare.</p>
+    <div class="avvertenze">
+      <div><h3>Il problema</h3>
+        <p>ChatGPT non può scrivere file sul tuo computer e non può aggiungere da solo una skill al tuo account. Il testo che incolli gli fa leggere la skill e applicarla <strong>solo in quella conversazione</strong>: quando apri una chat nuova, la skill non c'è più.</p>
+        <p>In più ChatGPT riesce ad aprire l'indirizzo del file SKILL.md solo se la ricerca sul web è attiva. Se risponde che non riesce a leggerlo, apri tu il collegamento, copia il contenuto del file e incollalo nella chat.</p>
+        <p>Molte skill sono scritte per assistenti che lavorano sui file (Claude Code, Codex): comandi, script e cartelle di supporto in ChatGPT possono non funzionare, oppure funzionare solo in parte.</p></div>
+      <div><h3>Le soluzioni, dalla più semplice</h3>
+        <ol>
+          <li><strong>Per un uso occasionale:</strong> incolla il testo della dashboard all'inizio della conversazione e lavora lì.</li>
+          <li><strong>Per riusarla spesso:</strong> crea un progetto in ChatGPT e incolla il contenuto di SKILL.md nelle istruzioni del progetto. Ogni chat aperta in quel progetto la userà.</li>
+          <li><strong>Se il tuo piano ChatGPT include la funzione Skill:</strong> scarica la cartella della skill, comprimila in un archivio .zip e caricala dalle impostazioni di ChatGPT.</li>
+          <li><strong>Per le skill tecniche:</strong> usa Codex, lo strumento di OpenAI che installa le skill vere e proprie con il comando indicato nel campo «Codex».</li>
+        </ol>
+        <p>I GPT personalizzati sono un caso a parte: non si installano, si aprono dal collegamento e si usano subito.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sezione sezione--scura gutter" id="avvertenze">
+  <div class="interno">
+    <h2 class="sezione__titolo">Avvertenze, contatti e privacy</h2>
+    <div class="avvertenze avvertenze--scure">
+      <div><h3>Solo un archivio</h3>
+        <p>MondoSkills è un archivio: raccoglie e ordina skill pubblicate da altri, con il collegamento alla fonte originale. Non ho scritto io queste skill, non le vendo e non le controllo una per una.</p>
+        <p>Descrizioni, categorie, prezzi, licenze e compatibilità sono riportati come indicati dalle fonti o ricostruiti da queste: possono contenere errori o non essere più aggiornati. Prima di usarle, controlla sempre la pagina dell'autore.</p></div>
+      <div><h3>Nessuna responsabilità sulle skill</h3>
+        <p>Non rispondo di errori, malfunzionamenti, danni o risultati sbagliati causati dalle skill, né dei testi di installazione, che la dashboard compone in automatico a partire dal collegamento di ogni skill.</p>
+        <p>Una skill può eseguire comandi, leggere file e collegarsi a servizi esterni: installa solo quelle di cui ti fidi, leggine prima il contenuto e non affidarle dati personali o riservati senza averle verificate. Licenze e condizioni d'uso restano quelle stabilite dai rispettivi autori.</p></div>
+      <div id="chi-sono"><h3>Chi cura MondoSkills</h3>
+        <p><strong>Guido Costalonga</strong>, di Roveredo in Piano (Pordenone), si occupa di uso pratico dell'intelligenza artificiale nel lavoro di tutti i giorni. Ha raccolto e ordinato queste skill per renderle facili da trovare e da installare, anche per chi non è un tecnico.</p>
+        <p>Il suo sito personale è <a href="https://ginopizza.it/" rel="me">ginopizza.it</a>.</p></div>
+      <div id="contatti"><h3>Contatti e segnalazioni</h3>
+        <p>Hai trovato un errore, un collegamento che non funziona o una skill che manca? Segnalalo dalla pagina delle segnalazioni del progetto: <a href="https://github.com/GuidoCostalonga/mondoskills/issues/new">apri una segnalazione</a> (serve un account GitHub gratuito).</p>
+        <p>Il codice e i dati del sito sono pubblici nel <a href="https://github.com/GuidoCostalonga/mondoskills">repository GuidoCostalonga/mondoskills</a>.</p></div>
+      <div id="privacy"><h3>Privacy</h3>
+        <p>MondoSkills non usa cookie, non usa strumenti di statistica o di profilazione e non raccoglie dati personali. Caratteri, immagini e dati sono ospitati sul sito stesso: la pagina non chiama servizi di terzi.</p>
+        <p>Il sito è pubblicato con GitHub Pages: come indicato nell'<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">informativa di GitHub</a>, GitHub registra l'indirizzo IP dei visitatori per motivi di sicurezza. Il tasto «Copia» usa solo gli appunti del tuo dispositivo.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="piede gutter"><div class="interno">
+    <p class="motto">Le skill buone arrivano in scatole rosa</p>
+    <a class="grosso" href="#catalogo">Torna al catalogo</a>
+  </div></div>
+  <div class="piede-nero gutter"><div class="interno"><span>MondoSkills.it · catalogo di skill per Claude e ChatGPT</span><span>Dati aggiornati al 14 ottobre 2026 · <a href="/#avvertenze">Avvertenze</a> · <a href="/#chi-sono">Chi cura il sito</a> · <a href="/#contatti">Contatti</a> · <a href="/#privacy">Privacy</a></span></div></div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlg-titolo"></dialog>
+<div class="avviso" id="avviso" role="status" hidden></div>
+
+<script>
+const TECHSY = __TECHSY__;
+function inizia(RAW){
+const H = RAW.h;
+const C = {nome:0,fonte:1,desc:2,link:3,cat:4,sub:5,ambito:6,lingua:7,elenco:8,ita:9,norme:10,piatt:11,agenti:12,amb:13,gpt:14,codex:15,tipo:16,plugin:17,dest:18,altri:19,livello:20,esterni:21,output:22,script:23,costo:24,prezzo:25,lic:26,os:27,autore:28,tipoaut:29,racc:30,linkracc:31,tipofonte:32,stelle:33,agg:34,conv:35,voto:36};
+const ROWS = RAW.rows.map(r => r.map((v,i) => { const d = RAW.dict[i]; return d ? (v < 0 ? null : d[v]) : v; }));
+const vuoto = v => v == null || v === '' || v === '—' || v === 'n.d.';
+const fmt = n => n == null ? '' : Number(n).toLocaleString('it-IT');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+const dataEstesa = s => { if(!s) return ''; const [a,m,g] = String(s).split('-'); return `${+g} ${MESI[+m-1]} ${a}`; };
+const convNum = s => { if(!s) return 0; const m = String(s).match(/([\d.,]+)\s*([KM]?)/i); if(!m) return 0; return parseFloat(m[1].replace(',','.')) * (m[2].toUpperCase()==='M'?1e6:m[2].toUpperCase()==='K'?1e3:1); };
+const AGENTI = ['Claude','ChatGPT','Codex','Gemini','Cursor','Copilot','OpenCode','Hermes Agent'];
+const agentiDi = r => { const s = (r[C.agenti]||'') + ' ' + (r[C.piatt]||''); const a = AGENTI.filter(x => s.includes(x)); if (r[C.gpt]==='Sì' && !a.includes('ChatGPT')) a.push('ChatGPT'); if (r[C.codex]==='Sì' && !a.includes('Codex')) a.push('Codex'); return a; };
+
+/* ---------- Definizione dei filtri ---------- */
+const fasciaStelle = v => v==null ? 'Non indicate' : v>=100000 ? 'Più di 100.000' : v>=10000 ? 'Da 10.000 a 99.999' : v>=1000 ? 'Da 1.000 a 9.999' : v>=100 ? 'Da 100 a 999' : 'Meno di 100';
+const ORD_STELLE = ['Più di 100.000','Da 10.000 a 99.999','Da 1.000 a 9.999','Da 100 a 999','Meno di 100','Non indicate'];
+const fasciaVoto = v => v==null ? 'Non valutato' : v>=4.5 ? '4,5 e oltre' : v>=4 ? 'Da 4,0 a 4,4' : v>=3 ? 'Da 3,0 a 3,9' : 'Sotto 3,0';
+const ORD_VOTO = ['4,5 e oltre','Da 4,0 a 4,4','Da 3,0 a 3,9','Sotto 3,0','Non valutato'];
+const meseAgg = v => { if(!v) return 'Non indicato'; const [a,m] = String(v).split('-'); return `${MESI[+m-1][0].toUpperCase()+MESI[+m-1].slice(1)} ${a}`; };
+const col = i => r => [r[i] ?? 'Non indicato'];
+const GRUPPI = [
+  {t:'Argomento', f:[
+    {id:'cat', l:'Categoria', g:col(C.cat)},
+    {id:'sub', l:'Sottocategoria', g:col(C.sub)},
+    {id:'output', l:'Tipo di output', g:col(C.output)},
+    {id:'norme', l:'Riferimenti normativi', g:r => [vuoto(r[C.norme]) ? 'Nessun riferimento' : r[C.norme]], primo:['Nessun riferimento']},
+    {id:'ita', l:'Contesto italiano', g:col(C.ita)},
+  ]},
+  {t:'Piattaforma e compatibilità', f:[
+    {id:'funziona', l:'Funziona con', g:agentiDi, ordine:AGENTI},
+    {id:'piatt', l:'Piattaforma', g:col(C.piatt)},
+    {id:'agenti', l:'Agenti compatibili dichiarati', g:col(C.agenti)},
+    {id:'amb', l:'Ambiente Claude indicato', g:col(C.amb)},
+    {id:'gpt', l:'Compatibile con ChatGPT', g:col(C.gpt)},
+    {id:'codex', l:'Compatibile con Codex', g:col(C.codex)},
+    {id:'tipo', l:'Tipo di risorsa', g:col(C.tipo)},
+    {id:'plugin', l:'Plugin o pacchetto', g:col(C.plugin)},
+    {id:'script', l:'Include script', g:col(C.script)},
+    {id:'esterni', l:'Richiede servizi esterni (MCP, API, web)', g:col(C.esterni)},
+  ]},
+  {t:'Destinatari e lingua', f:[
+    {id:'profilo', l:'Utile a (qualsiasi ruolo)', g:r => [r[C.dest], ...String(r[C.altri]||'').split(';').map(s=>s.trim())].filter(x => !vuoto(x))},
+    {id:'dest', l:'Destinatario principale', g:col(C.dest)},
+    {id:'altri', l:'Altri destinatari', g:r => vuoto(r[C.altri]) ? ['Nessuno'] : String(r[C.altri]).split(';').map(s=>s.trim())},
+    {id:'livello', l:'Livello tecnico', g:col(C.livello), ordine:['Base','Intermedio','Avanzato']},
+    {id:'lingua', l:'Lingua della skill', g:col(C.lingua)},
+    {id:'elenco', l:'Elenco di provenienza', g:col(C.elenco)},
+  ]},
+  {t:'Costo e licenza', f:[
+    {id:'costo', l:'Costo', g:col(C.costo)},
+    {id:'prezzo', l:'Prezzo indicato', g:col(C.prezzo)},
+    {id:'lic', l:'Licenza', g:col(C.lic)},
+    {id:'os', l:'Open source', g:col(C.os)},
+  ]},
+  {t:'Autore e fonte', f:[
+    {id:'tipoaut', l:'Tipo di autore', g:col(C.tipoaut)},
+    {id:'autore', l:'Autore o editore', g:col(C.autore)},
+    {id:'racc', l:'Raccolta o repository', g:col(C.racc)},
+    {id:'fonte', l:'Fonte', g:col(C.fonte)},
+    {id:'tipofonte', l:'Tipo di fonte', g:col(C.tipofonte)},
+  ]},
+  {t:'Popolarità e aggiornamento', f:[
+    {id:'stelle', l:'Stelle GitHub del repository', g:r => [fasciaStelle(r[C.stelle])], ordine:ORD_STELLE},
+    {id:'agg', l:'Ultimo aggiornamento del repository', g:r => [meseAgg(r[C.agg])], ordineFn:'data'},
+    {id:'conv', l:'Conversazioni GPT', g:r => [r[C.conv] ?? 'Non indicate'], ordineFn:'conv'},
+    {id:'voto', l:'Valutazione GPT', g:r => [fasciaVoto(r[C.voto])], ordine:ORD_VOTO},
+  ]},
+];
+const FILTRI = GRUPPI.flatMap(g => g.f);
+const FI = Object.fromEntries(FILTRI.map(f => [f.id, f]));
+const CHIAVI = ROWS.map(r => FILTRI.map(f => f.g(r)));
+const TESTO = ROWS.map(r => [r[C.nome],r[C.desc],r[C.ambito],r[C.norme],r[C.autore],r[C.racc],r[C.plugin],r[C.sub],r[C.cat]].join(' ').toLowerCase());
+
+const RAPIDI = [
+  {l:'In italiano', set:{ita:null}, fn:r => /Italiano|IT\/EN/.test(r[C.lingua]||'')},
+  {l:'Contesto italiano', f:'ita', v:'Sì'},
+  {l:'Gratuite', f:'costo', v:'Gratuita'},
+  {l:'Per Claude', f:'funziona', v:'Claude'},
+  {l:'Per ChatGPT', f:'funziona', v:'ChatGPT'},
+  {l:'Livello base', f:'livello', v:'Base'},
+  {l:'Ufficiali Anthropic', f:'tipoaut', v:'Ufficiale Anthropic'},
+  {l:'Ufficiali OpenAI', f:'tipoaut', v:'Ufficiale OpenAI'},
+];
+
+const stato = { sel:{}, q:'', ordina:'nome', mostra:24, ita:false };
+
+/* ---------- Testi di installazione ---------- */
+function gh(link){
+  const m = String(link||'').match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|tree)\/([^/]+)\/(.+)$/);
+  if(!m) return null;
+  const [ , owner, repo, branch, path ] = m;
+  const parti = path.split('/');
+  const file = parti[parti.length-1];
+  const eSkill = /^SKILL\.md$/i.test(file);
+  const dir = eSkill ? parti.slice(0,-1).join('/') : path;
+  const cartella = eSkill ? (parti[parti.length-2] || repo) : file.replace(/\.md$/i,'');
+  return { owner, repo, branch, path, file, eSkill, dir,
+    cartella: cartella.toLowerCase().replace(/[^a-z0-9._-]+/g,'-'),
+    tree: eSkill ? `https://github.com/${owner}/${repo}/tree/${branch}/${dir}` : link,
+    raw: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}` };
+}
+const slug = s => String(s||'skill').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60) || 'skill';
+const minIniz = s => s ? s[0].toLowerCase() + s.slice(1) : '';
+
+function installazione(r){
+  const nome = r[C.nome], link = r[C.link], tipo = r[C.tipo] || '', plugin = vuoto(r[C.plugin]) ? null : r[C.plugin];
+  const ag = agentiDi(r);
+  const perClaude = ag.includes('Claude') || /Altri agenti/.test(r[C.piatt]||'');
+  const perGpt = r[C.gpt] === 'Sì', perCodex = r[C.codex] === 'Sì';
+  const aPagamento = /pagamento|€/i.test((r[C.costo]||'') + (r[C.prezzo]||''));
+  const g = gh(link);
+  const tx = /techsy\.io/.test(link) && TECHSY[nome] ? `https://techsy.io/it/comunita/claude-skills/${TECHSY[nome]}` : null;
+  let claude = null, gpt = null, notaClaude = '', notaGpt = '';
+  const scaricaPrima = `Prima scarica la skill dalla pagina dell'autore:\n${link}${aPagamento ? `\n(Skill a pagamento: ${r[C.prezzo]})` : ''}\nAlcuni siti chiedono un'email o una registrazione prima del download.\n\nPoi incolla questo testo, allegando il file scaricato:\n\n`;
+
+  if (tx) {
+    const comando = '/' + TECHSY[nome];
+    const passi = `1. Apri la pagina della skill: ${tx}\n2. Premi «Scarica il subagent completo». Il sito chiede un'email di lavoro e poi consegna un file .md (non un archivio).\n3. Incolla questo testo, allegando il file scaricato:\n\n`;
+    claude = passi + `Ti allego il file della skill «${nome}» di Techsy. Il file descrive la sequenza di lavoro ma non contiene le istruzioni complete né la definizione dei subagent: completale tu a partire dalla descrizione. Installa la skill in ~/.claude/skills/${TECHSY[nome]}/SKILL.md con l'intestazione name e description, salva i subagent in ~/.claude/agents/ e alla fine dimmi come richiamarla (comando ${comando}). Se in questo ambiente non puoi scrivere file, prepara l'archivio .zip da caricare in claude.ai, Impostazioni, sezione Funzionalità.`;
+    notaClaude = 'Le skill di Techsy sono pensate per Claude Code: il file scaricato è una scheda da completare, non una skill pronta.';
+  } else if (/GPT personalizzato/i.test(tipo)) {
+    gpt = `Questo è un GPT personalizzato: non si installa, si apre in ChatGPT.\n\n1. Apri il collegamento: ${link}\n2. Avvia una nuova conversazione con il GPT (puoi anche fissarlo nella barra laterale).\n3. Primo messaggio da incollare:\n\nCiao. Presentami in poche righe che cosa sai fare, quali informazioni ti servono da me e un esempio di richiesta ben fatta. Rispondi in italiano.`;
+    notaGpt = 'Serve un account ChatGPT. Alcune funzioni possono richiedere un piano a pagamento.';
+  } else if (/modello da creare|esempio da creare/i.test(tipo)) {
+    const base = `Crea per me una skill chiamata «${nome}». Scopo: ${minIniz(r[C.desc])}\n\nScrivi il file SKILL.md completo, con intestazione (name e description) e istruzioni passo passo, esempi di input e di output, e i controlli da fare prima di consegnare il risultato. Modello di riferimento: ${link}`;
+    if (perGpt || perCodex) gpt = base + `\n\nAlla fine dimmi come riusarla: nelle istruzioni di un progetto oppure, se il mio piano lo prevede, tra le mie skill.`;
+    if (perClaude) claude = `Usa la skill skill-creator. ` + base + `\n\nPoi installala in ~/.claude/skills/${slug(nome)}/SKILL.md oppure preparami l'archivio .zip da caricare in claude.ai, Impostazioni, sezione Funzionalità.`;
+    notaGpt = notaClaude = 'È un esempio ufficiale da ricreare: il testo chiede all\'assistente di scrivere la skill.';
+  } else if (g) {
+    const comando = /comando slash/i.test(tipo);
+    if (comando) {
+      claude = `Installa per me il comando «${nome}» dal repository GitHub ${g.owner}/${g.repo}.\n\nFile: ${g.raw}\n\n1. Scarica il file ${g.file}.\n2. Salvalo in ~/.claude/commands/${g.file}.\n3. Confermami l'installazione e dimmi come richiamare il comando con la barra (/).`;
+      if (plugin) claude += `\n\nIl comando fa parte del plugin «${plugin}»: se il repository contiene un catalogo di plugin (.claude-plugin/marketplace.json), in Claude Code puoi in alternativa aggiungerlo con /plugin marketplace add ${g.owner}/${g.repo} e installare il plugin «${plugin}» con /plugin install.`;
+    } else {
+      claude = `Installa per me la skill «${nome}» dal repository GitHub ${g.owner}/${g.repo}.\n\nCartella: ${g.tree}\nFile principale: ${g.raw}\n\n1. Scarica ${g.eSkill ? `l'intera cartella «${g.dir}» (ramo ${g.branch}), con SKILL.md e tutti i file di supporto presenti (scripts, references, assets)` : `il file ${g.file} e salvalo con il nome SKILL.md`}.\n2. Mettila in ~/.claude/skills/${g.cartella}/ in modo che il file sia ~/.claude/skills/${g.cartella}/SKILL.md.\n3. Controlla che l'intestazione di SKILL.md contenga i campi name e description.\n4. Confermami l'installazione e dimmi con quale richiesta posso attivare la skill.\n\nSe in questo ambiente non puoi scrivere file, prepara l'archivio .zip della cartella e spiegami come caricarlo in claude.ai, Impostazioni, sezione Funzionalità.`;
+      if (plugin) claude += `\n\nLa skill fa parte del plugin «${plugin}»: se il repository contiene un catalogo di plugin (.claude-plugin/marketplace.json), in Claude Code puoi in alternativa aggiungerlo con /plugin marketplace add ${g.owner}/${g.repo} e installare il plugin «${plugin}» con /plugin install.`;
+    }
+    notaClaude = 'Funziona in Claude Code e Cowork, che possono scrivere file. In claude.ai la skill si carica come archivio .zip.';
+    const parti = [];
+    if (perCodex) parti.push(`IN CODEX (app, terminale o estensione) incolla:\n\n$skill-installer install ${g.tree}`);
+    if (perGpt) parti.push(`IN CHATGPT incolla:\n\nLeggi la skill «${nome}» da questo indirizzo: ${g.raw}\nUsa le istruzioni del file come regole di lavoro per questa conversazione${g.eSkill ? `; se rimandano ad altri file della stessa cartella (${g.tree}), leggili quando servono` : ''}. Poi riassumimi in tre righe che cosa fa la skill e chiedimi il materiale su cui lavorare.\nSe non riesci ad aprire l'indirizzo, dimmelo subito: ti incollerò io il contenuto del file.`);
+    if (parti.length) gpt = parti.join('\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n');
+    notaGpt = perCodex && perGpt ? 'Codex installa davvero la skill. In ChatGPT, invece, il testo la fa usare solo in questa conversazione: vedi la sezione «Installare una skill su ChatGPT».' : perCodex ? 'In Codex la skill viene installata nella cartella delle skill dell\'utente; riavvia Codex se non compare subito.' : 'Attenzione: in ChatGPT questo testo non installa la skill, la fa usare solo in questa conversazione. Leggi la sezione «Installare una skill su ChatGPT» per le alternative.';
+  } else {
+    if (perClaude) claude = scaricaPrima + `Ti allego il pacchetto della skill «${nome}». Estrai l'archivio, controlla che contenga un SKILL.md con intestazione valida (name e description) e installalo in ~/.claude/skills/${slug(nome)}/. Se in questo ambiente non puoi scrivere file, spiegami come caricarlo in claude.ai, Impostazioni, sezione Funzionalità.`;
+    if (perGpt || perCodex) gpt = scaricaPrima + `Ti allego la skill «${nome}». Leggi il file SKILL.md e le istruzioni collegate e usale come regole di lavoro per questa conversazione. Poi riassumimi in tre righe che cosa fa e chiedimi il materiale su cui lavorare.` + (perCodex ? `\n\nIn Codex: copia la cartella estratta in ~/.codex/skills/${slug(nome)}/ oppure chiedi a Codex di farlo per te.` : '');
+    notaClaude = notaGpt = 'La skill non è su GitHub: va prima scaricata dalla pagina dell\'autore. Controlla che il file contenga istruzioni complete prima di installarlo.';
+  }
+  if (!claude && !gpt) {
+    claude = `Leggi la skill «${nome}» da questo indirizzo: ${link}\nInstallala in ~/.claude/skills/${slug(nome)}/SKILL.md se puoi scrivere file, altrimenti spiegami come caricarla in claude.ai.`;
+  }
+  return { claude, gpt, notaClaude, notaGpt, gptTitolo: perGpt && perCodex ? 'ChatGPT e Codex' : perCodex && !perGpt ? 'Codex' : 'ChatGPT' };
+}
+
+/* ---------- Calcolo ---------- */
+function filtra(){
+  const q = stato.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const attivi = FILTRI.map((f,i) => [i, stato.sel[f.id]]).filter(x => x[1] != null);
+  const conteggi = FILTRI.map(() => new Map());
+  const passa = [];
+  for (let r = 0; r < ROWS.length; r++) {
+    if (q.length && !q.every(p => TESTO[r].includes(p))) continue;
+    if (stato.ita && !/Italiano|IT\/EN/.test(ROWS[r][C.lingua]||'')) continue;
+    let falliti = 0, quale = -1;
+    for (const [i, v] of attivi) { if (!CHIAVI[r][i].includes(v)) { falliti++; quale = i; if (falliti > 1) break; } }
+    if (falliti > 1) continue;
+    if (falliti === 0) {
+      passa.push(r);
+      for (let i = 0; i < FILTRI.length; i++) for (const k of CHIAVI[r][i]) conteggi[i].set(k, (conteggi[i].get(k)||0) + 1);
+    } else {
+      for (const k of CHIAVI[r][quale]) conteggi[quale].set(k, (conteggi[quale].get(k)||0) + 1);
+    }
+  }
+  return { passa, conteggi };
+}
+const ORDINI = {
+  nome: (a,b) => String(ROWS[a][C.nome]).localeCompare(String(ROWS[b][C.nome]),'it',{sensitivity:'base'}),
+  stelle: (a,b) => (ROWS[b][C.stelle]??-1) - (ROWS[a][C.stelle]??-1),
+  data: (a,b) => String(ROWS[b][C.agg]||'').localeCompare(String(ROWS[a][C.agg]||'')),
+  voto: (a,b) => (ROWS[b][C.voto]??-1) - (ROWS[a][C.voto]??-1),
+  conv: (a,b) => convNum(ROWS[b][C.conv]) - convNum(ROWS[a][C.conv]),
+  cat: (a,b) => String(ROWS[a][C.cat]).localeCompare(String(ROWS[b][C.cat]),'it') || ORDINI.nome(a,b),
+};
+
+/* ---------- Disegno ---------- */
+const $ = id => document.getElementById(id);
+function costruisciFiltri(){
+  $('gruppi').innerHTML = GRUPPI.map((g,gi) => `<details class="gruppo" ${gi<2?'open':''} data-g="${gi}"><summary>${esc(g.t)}<span class="attivi" hidden></span></summary><div class="gruppo__corpo">${
+    g.f.map(f => `<div class="campo"><label for="f-${f.id}">${esc(f.l)}</label><select id="f-${f.id}" data-f="${f.id}"></select></div>`).join('')}</div></details>`).join('');
+  $('gruppi').addEventListener('change', e => { const f = e.target.dataset.f; if(!f) return; stato.sel[f] = e.target.value === '' ? null : e.target.value; if (f==='cat') stato.sel.sub = null; stato.mostra = 24; aggiorna(); });
+}
+function ordinaOpzioni(f, voci){
+  if (f.ordine) return voci.sort((a,b) => (f.ordine.indexOf(a[0])+999*(f.ordine.indexOf(a[0])<0)) - (f.ordine.indexOf(b[0])+999*(f.ordine.indexOf(b[0])<0)));
+  if (f.ordineFn === 'data') { const v = s => { const p = s.split(' '); return p.length===2 ? +p[1]*100 + MESI.indexOf(p[0].toLowerCase()) : -1; }; return voci.sort((a,b) => v(b[0]) - v(a[0])); }
+  if (f.ordineFn === 'conv') return voci.sort((a,b) => convNum(b[0]) - convNum(a[0]));
+  return voci.sort((a,b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0]),'it'));
+}
+function aggiornaFiltri(conteggi){
+  FILTRI.forEach((f,i) => {
+    const s = $('f-'+f.id), sel = stato.sel[f.id];
+    const voci = ordinaOpzioni(f, [...conteggi[i].entries()]);
+    if (sel != null && !conteggi[i].has(sel)) voci.unshift([sel, 0]);
+    const tot = voci.reduce((a,v) => a + v[1], 0);
+    s.innerHTML = `<option value="">Tutti (${voci.length} voci)</option>` + voci.map(([k,n]) => `<option value="${esc(k)}"${k===sel?' selected':''}>${esc(k)} (${fmt(n)})</option>`).join('');
+    s.classList.toggle('attivo', sel != null);
+  });
+  document.querySelectorAll('.gruppo').forEach(d => { const g = GRUPPI[d.dataset.g]; const n = g.f.filter(f => stato.sel[f.id] != null).length; const b = d.querySelector('.attivi'); b.hidden = !n; b.textContent = n; if (n) d.open = true; });
+}
+function scheda(r){
+  const o = ROWS[r];
+  const meta = o[C.stelle] != null ? `★ ${fmt(o[C.stelle])}` : o[C.voto] != null ? `Voto ${String(o[C.voto]).replace('.',',')} · ${esc(o[C.conv]||'')}` : esc(o[C.tipofonte]||'');
+  const ins = installazione(o);
+  return `<article class="scheda">
+    <div class="scheda__cima"><span>${esc(o[C.cat])}</span><span>${meta}</span></div>
+    <div class="scheda__corpo">
+      <h3>${esc(o[C.nome])}</h3>
+      <p>${esc(o[C.desc])}</p>
+      <div class="etichette">
+        <span class="etichetta etichetta--piena">${esc(o[C.piatt])}</span>
+        <span class="etichetta">${esc(o[C.livello])}</span>
+        <span class="etichetta">${esc(o[C.costo])}</span>
+        <span class="etichetta">${esc(o[C.lingua]).replace(/ \(.*\)/,'')}</span>
+        ${o[C.ita]==='Sì' ? '<span class="etichetta">Contesto italiano</span>' : ''}
+      </div>
+    </div>
+    <div class="scheda__azioni">
+      ${ins.claude ? `<button type="button" class="${ins.gpt?'':'solo'}" data-copia="claude" data-r="${r}">Copia per Claude</button>` : ''}
+      ${ins.gpt ? `<button type="button" class="${ins.claude?'':'solo'}" data-copia="gpt" data-r="${r}">Copia per ${esc(ins.gptTitolo)}</button>` : ''}
+      <button type="button" class="largo" data-apri="${r}">Scheda completa e installazione</button>
+    </div>
+  </article>`;
+}
+let ultimo = [];
+function aggiorna(){
+  const { passa, conteggi } = filtra();
+  passa.sort(ORDINI[stato.ordina]);
+  ultimo = passa;
+  aggiornaFiltri(conteggi);
+  $('conteggio').innerHTML = `<b>${fmt(passa.length)}</b> skill trovate su ${fmt(ROWS.length)}`;
+  const att = FILTRI.filter(f => stato.sel[f.id] != null).map(f => `<button type="button" class="attivo-chip" data-togli="${f.id}"><i>${esc(f.l)}:</i> ${esc(stato.sel[f.id])} ✕</button>`);
+  if (stato.q) att.unshift(`<button type="button" class="attivo-chip" data-togli="q"><i>Testo:</i> ${esc(stato.q)} ✕</button>`);
+  if (stato.ita) att.unshift(`<button type="button" class="attivo-chip" data-togli="ita"><i>Lingua:</i> skill in italiano ✕</button>`);
+  $('attivi').innerHTML = att.join('');
+  $('griglia').innerHTML = passa.length ? passa.slice(0, stato.mostra).map(scheda).join('') :
+    `<div class="vuoto" style="grid-column:1/-1"><div><h3>Nessuna skill con questi filtri</h3><p>Togli uno dei filtri attivi qui sopra oppure azzera tutto per ripartire dall'elenco completo.</p></div></div>`;
+  $('altre').hidden = passa.length <= stato.mostra;
+  $('altre').textContent = `Mostra altre ${Math.min(24, passa.length - stato.mostra)} skill`;
+  document.querySelectorAll('#rapidi .chip').forEach((b,i) => { const x = RAPIDI[i]; b.setAttribute('aria-pressed', x.fn ? String(stato.ita) : String(stato.sel[x.f] === x.v)); });
+  document.querySelectorAll('.barra-cat').forEach(b => b.setAttribute('aria-pressed', String(stato.sel.cat === b.dataset.cat)));
+  $('apri-filtri').textContent = `Filtri (${FILTRI.filter(f => stato.sel[f.id] != null).length})`;
+  $('chiudi-filtri').textContent = `Mostra ${fmt(passa.length)} skill`;
+}
+
+/* ---------- Scheda completa ---------- */
+const SEZ_DATI = [
+  ['Identità', [C.nome,C.fonte,C.link,C.cat,C.sub,C.ambito]],
+  ['Lingua e contesto', [C.lingua,C.elenco,C.ita,C.norme]],
+  ['Piattaforma e compatibilità', [C.piatt,C.agenti,C.amb,C.gpt,C.codex,C.tipo,C.plugin]],
+  ['Uso', [C.dest,C.altri,C.livello,C.esterni,C.output,C.script]],
+  ['Costo e licenza', [C.costo,C.prezzo,C.lic,C.os]],
+  ['Autore e fonte', [C.autore,C.tipoaut,C.racc,C.linkracc,C.tipofonte]],
+  ['Popolarità', [C.stelle,C.agg,C.conv,C.voto]],
+];
+function valore(i, v){
+  if (v == null || v === '') return 'Non indicato';
+  if (i === C.link || i === C.linkracc) return `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`;
+  if (i === C.stelle) return fmt(v);
+  if (i === C.agg) return esc(dataEstesa(v));
+  if (i === C.voto) return String(v).replace('.',',') + ' su 5';
+  return esc(v);
+}
+function apri(r){
+  const o = ROWS[r], ins = installazione(o);
+  const box = (k, titolo, testo, nota) => `<div class="script"><div class="script__testa"><h3>${esc(titolo)}</h3><button type="button" data-copia="${k}" data-r="${r}">Copia</button></div><pre>${esc(testo)}</pre>${nota ? `<p>${esc(nota)}</p>` : ''}</div>`;
+  $('dlg').innerHTML = `<div class="dlg__testa"><div><small>${esc(o[C.cat])} · ${esc(o[C.sub])}</small><h2 id="dlg-titolo">${esc(o[C.nome])}</h2></div><button type="button" id="dlg-chiudi">Chiudi ✕</button></div>
+  <div class="dlg__corpo">
+    <p class="dlg__desc">${esc(o[C.desc])}</p>
+    <div class="gruppo-dati"><h3>Testo da incollare per installarla</h3><p style="margin:0 0 10px;font-size:.88rem">Testi composti in automatico dalla dashboard: controlla la skill prima di installarla. ${ins.gpt && o[C.gpt]==='Sì' ? 'In ChatGPT il testo non installa la skill in modo permanente: <a href="#chatgpt" data-chiudi>leggi come fare</a>.' : ''}</p><div class="installa">
+      ${ins.claude ? box('claude','Per Claude', ins.claude, ins.notaClaude) : ''}
+      ${ins.gpt ? box('gpt','Per '+ins.gptTitolo, ins.gpt, ins.notaGpt) : ''}
+    </div></div>
+    ${SEZ_DATI.map(([t, cols]) => `<div class="gruppo-dati"><h3>${t}</h3><dl class="dati">${cols.map(i => `<div class="dato"><dt>${esc(H[i])}</dt><dd>${valore(i, o[i])}</dd></div>`).join('')}</dl></div>`).join('')}
+  </div>`;
+  $('dlg').showModal();
+  $('dlg').scrollTop = 0;
+  $('dlg-chiudi').onclick = () => $('dlg').close();
+}
+$('dlg').addEventListener('click', e => { if (e.target === $('dlg') || e.target.closest('[data-chiudi]')) $('dlg').close(); });
+
+/* ---------- Copia ---------- */
+let tAvviso;
+function avvisa(t){ const a = $('avviso'); a.textContent = t; a.hidden = false; clearTimeout(tAvviso); tAvviso = setTimeout(() => a.hidden = true, 2200); }
+function copia(testo, etichetta){
+  const ripiego = () => { const ta = document.createElement('textarea'); ta.value = testo; ta.style.position='fixed'; ta.style.opacity='0'; (document.querySelector('dialog[open]')||document.body).appendChild(ta); ta.select(); let ok=false; try{ ok = document.execCommand('copy'); }catch(e){} ta.remove(); avvisa(ok ? `Copiato: ${etichetta}` : 'Copia non riuscita: seleziona il testo a mano'); };
+  try { navigator.clipboard.writeText(testo).then(() => avvisa(`Copiato: ${etichetta}`), ripiego); } catch(e){ ripiego(); }
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-copia]');
+  if (c) { const ins = installazione(ROWS[+c.dataset.r]); const k = c.dataset.copia; copia(ins[k], k==='claude' ? 'testo per Claude' : 'testo per '+ins.gptTitolo); return; }
+  const a = e.target.closest('[data-apri]'); if (a) { apri(+a.dataset.apri); return; }
+  const t = e.target.closest('[data-togli]');
+  if (t) { const k = t.dataset.togli; if (k==='q') { stato.q=''; $('q').value=''; } else if (k==='ita') stato.ita=false; else { stato.sel[k]=null; if(k==='cat') stato.sel.sub=null; } stato.mostra=24; aggiorna(); }
+});
+
+/* ---------- Avvio ---------- */
+function avvio(){
+  const n = ROWS.length;
+  $('tot-testo').textContent = fmt(n);
+  const conta = fn => ROWS.filter(fn).length;
+  const NUM = [
+    [n, 'skill e GPT nel catalogo', null],
+    [conta(r => /Italiano|IT\/EN/.test(r[C.lingua]||'')), 'scritte in italiano', () => { stato.ita = true; }],
+    [conta(r => r[C.ita]==='Sì'), 'con contesto italiano', () => { stato.sel.ita = 'Sì'; }],
+    [conta(r => agentiDi(r).includes('Claude')), 'funzionano con Claude', () => { stato.sel.funziona = 'Claude'; }],
+    [conta(r => r[C.gpt]==='Sì'), 'compatibili con ChatGPT', () => { stato.sel.gpt = 'Sì'; }],
+    [conta(r => r[C.costo]==='A pagamento'), 'a pagamento', () => { stato.sel.costo = 'A pagamento'; }],
+  ];
+  $('numeri').innerHTML = NUM.map(([v,l],i) => `<button type="button" class="numero" data-num="${i}" ${i===0?'tabindex="-1"':''}><b>${fmt(v)}</b><span>${l}</span></button>`).join('');
+  $('numeri').addEventListener('click', e => { const b = e.target.closest('[data-num]'); if (!b) return; const f = NUM[+b.dataset.num][2]; if (!f) return; f(); stato.mostra = 24; aggiorna(); $('catalogo').scrollIntoView(); });
+  const cats = {}; ROWS.forEach(r => cats[r[C.cat]] = (cats[r[C.cat]]||0) + 1);
+  const cv = Object.entries(cats).sort((a,b) => b[1]-a[1]); const max = cv[0][1];
+  $('barre').innerHTML = cv.map(([c,v]) => `<button type="button" class="barra-cat" data-cat="${esc(c)}" aria-pressed="false"><span class="nome">${esc(c)}</span><span class="traccia"><span class="riemp" style="width:${(v/max*100).toFixed(1)}%"></span></span><span class="val">${fmt(v)}</span></button>`).join('');
+  $('barre').addEventListener('click', e => { const b = e.target.closest('.barra-cat'); if (!b) return; stato.sel.cat = stato.sel.cat === b.dataset.cat ? null : b.dataset.cat; stato.sel.sub = null; stato.mostra = 24; aggiorna(); $('catalogo').scrollIntoView(); });
+  const nastro = `${fmt(n)} SKILL SCHEDATE ★ CLAUDE E CHATGPT ★ COPIA E INSTALLA ★ ${cv.length} CATEGORIE ★ FILTRI SU OGNI COLONNA ★ LE SKILL BUONE ARRIVANO IN SCATOLE ROSA ★ `;
+  $('nastro1').textContent = nastro.repeat(4);
+    $('rapidi').innerHTML = RAPIDI.map(x => `<button type="button" class="chip" aria-pressed="false">${esc(x.l)}</button>`).join('');
+  $('rapidi').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; const x = RAPIDI[[...b.parentNode.children].indexOf(b)]; if (x.fn) stato.ita = !stato.ita; else stato.sel[x.f] = stato.sel[x.f] === x.v ? null : x.v; stato.mostra = 24; aggiorna(); });
+  costruisciFiltri();
+  let tq; $('q').addEventListener('input', e => { clearTimeout(tq); tq = setTimeout(() => { stato.q = e.target.value; stato.mostra = 24; aggiorna(); }, 160); });
+  $('ordina').addEventListener('change', e => { stato.ordina = e.target.value; aggiorna(); });
+  $('altre').addEventListener('click', () => { stato.mostra += 24; aggiorna(); });
+  $('azzera').addEventListener('click', () => { stato.sel = {}; stato.q = ''; stato.ita = false; $('q').value = ''; stato.mostra = 24; aggiorna(); });
+  $('apri-filtri').addEventListener('click', () => { $('filtri').classList.add('aperti'); });
+  $('chiudi-filtri').addEventListener('click', () => { $('filtri').classList.remove('aperti'); $('catalogo').scrollIntoView(); });
+  disegnaFonti();
+  $('legenda').innerHTML = RAW.legenda.map(([t,p]) => `<div><h3>${esc(t)}</h3><p>${esc(p)}</p></div>`).join('');
+  /* collegamenti diretti: ?categoria=, ?skill=, ?cerca= */
+  const par = new URLSearchParams(location.search);
+  const pc = par.get('categoria'), ps = par.get('skill'), pq = par.get('cerca');
+  if (pc && ROWS.some(r => r[C.cat] === pc)) { stato.sel.cat = pc; }
+  if (pq) { stato.q = pq; $('q').value = pq; }
+  aggiorna();
+  if (pc || pq) $('catalogo').scrollIntoView();
+  if (ps != null && ROWS[+ps]) apri(+ps);
+}
+
+/* ---------- Tabella fonti ---------- */
+let ordFonti = { c:5, giu:true };
+function disegnaFonti(){
+  const h = RAW.fonti.h, rs = RAW.fonti.rows.slice();
+  const num = i => i===5 || i===8;
+  rs.sort((a,b) => { const x=a[ordFonti.c], y=b[ordFonti.c]; if (x==null && y==null) return 0; if (x==null) return 1; if (y==null) return -1; const d = num(ordFonti.c) ? x-y : String(x).localeCompare(String(y),'it'); return ordFonti.giu ? -d : d; });
+  $('tab-fonti').innerHTML = `<thead><tr>${h.map((t,i) => `<th data-c="${i}" aria-sort="${ordFonti.c===i?(ordFonti.giu?'descending':'ascending'):'none'}">${esc(t)}${ordFonti.c===i?(ordFonti.giu?' ▼':' ▲'):''}</th>`).join('')}</tr></thead><tbody>${
+    rs.map(r => `<tr data-fonte="${esc(r[0])}">${r.map((v,i) => `<td class="${num(i)?'num':''}">${i===4 && v ? `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>` : i===9 && v ? esc(dataEstesa(v)) : num(i) ? fmt(v) : esc(v ?? '')}</td>`).join('')}</tr>`).join('')}</tbody>`;
+}
+$('tab-fonti').addEventListener('click', e => {
+  const th = e.target.closest('th'); if (th) { const c = +th.dataset.c; ordFonti = { c, giu: ordFonti.c===c ? !ordFonti.giu : true }; disegnaFonti(); return; }
+  if (e.target.closest('a')) return;
+  const tr = e.target.closest('tr[data-fonte]'); if (!tr) return;
+  if (!ROWS.some(r => r[C.fonte] === tr.dataset.fonte)) { avvisa('Fonte di riferimento: nessuna skill collegata'); return; }
+  stato.sel = { fonte: tr.dataset.fonte }; stato.mostra = 24; aggiorna(); $('catalogo').scrollIntoView();
+});
+avvio();
+}
+__AVVIO__
+</script>

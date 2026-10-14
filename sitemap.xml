@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url>
-    <loc>https://mondoskills.it/</loc>
-    <lastmod>2026-10-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-    <image:image><image:loc>https://mondoskills.it/anteprima.jpg</image:loc></image:image>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://mondoskills.it/</loc><lastmod>2026-10-14</lastmod><priority>1.0</priority></url>
+  <url><loc>https://mondoskills.it/categoria/sicurezza-informatica/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/sviluppo-software/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/automazioni-e-integrazioni-app/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/marketing-seo-e-social/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/devops-cloud-e-infrastruttura/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/dati-analisi-e-intelligenza-artificiale/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/agenti-ai-prompt-e-meta-skill/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/design-ui-ux-e-grafica/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/fisco-contabilita-e-finanza/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/legale-e-diritto/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/prodotto-e-project-management/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/impresa-strategia-e-management/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/ricerca-scientifica-e-accademica/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/scrittura-contenuti-e-comunicazione/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/lavoro-hr-e-carriera/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/documenti-e-produttivita-d-ufficio/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/ingegneria-edilizia-e-tecnica/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/giochi-e-3d/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/vendite-e-crm/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/audio-video-e-multimedia/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/salute-medicina-e-scienze-della-vita/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/istruzione-formazione-e-lingue/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/privacy-compliance-e-ai-act/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/pubblica-amministrazione/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/casa-vita-quotidiana-e-tempo-libero/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mondoskills.it/categoria/altro/</loc><lastmod>2026-10-14</lastmod><priority>0.8</priority></url>
 </urlset>
