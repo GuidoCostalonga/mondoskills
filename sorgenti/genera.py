@@ -156,6 +156,7 @@ def home():
              "apri le pagine delle categorie qui sopra.</p></div></div>'; });")
     t = MODELLO
     t = t.replace('__TESTA__', testa(TITOLO_HOME, DESC_HOME, '/', ld,
+                                     '<link rel="preload" href="/logo.png" as="image" fetchpriority="high">\n'
                                      '<link rel="preload" href="/dati.json" as="fetch" crossorigin>\n'))
     t = t.replace('__NOSCRIPT__', nos).replace('__LINK_CATEGORIE__', link_categorie())
     t = t.replace('__TECHSY__', json.dumps(TECHSY, ensure_ascii=False)).replace('__AVVIO__', avvio)
