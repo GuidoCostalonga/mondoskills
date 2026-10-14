@@ -4,7 +4,8 @@
 Uso, dalla cartella principale del repository:
     python3 sorgenti/genera.py
 
-Produce: index.html, stile.css, categoria/<nome>/index.html, 404.html, sitemap.xml.
+Produce: index.html, stile.css, consenso.js, categoria/<nome>/index.html, privacy/index.html,
+404.html, sitemap.xml.
 """
 import collections
 import html
@@ -17,6 +18,13 @@ import unicodedata
 SITO = 'https://mondoskills.it'
 AGGIORNATO = '2026-10-14'
 AGGIORNATO_ESTESO = '14 ottobre 2026'
+# Statistiche con Google Analytics 4: si attivano solo se sono compilati entrambi i valori.
+# GA4_ID è l'identificativo di misurazione (G-XXXXXXXXXX), EMAIL_PRIVACY l'indirizzo pubblicato
+# nell'informativa per l'esercizio dei diritti. Con uno dei due vuoti il sito resta senza cookie.
+GA4_ID = ''
+EMAIL_PRIVACY = ''
+STATISTICHE = bool(GA4_ID and EMAIL_PRIVACY)
+assert not GA4_ID or re.fullmatch(r'G-[A-Z0-9]{4,16}', GA4_ID), 'GA4_ID non valido'
 RADICE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -83,6 +91,18 @@ SITO_LD = {'@type': 'WebSite', '@id': f'{SITO}/#sito', 'name': 'MondoSkills', 'u
            'inLanguage': 'it-IT', 'publisher': {'@id': f'{SITO}/#autore'}}
 
 
+CONSENSO = f'<script src="/consenso.js" data-ga4="{GA4_ID}" defer></script>\n' if STATISTICHE else ''
+
+if STATISTICHE:
+    RIQUADRO_PRIVACY = f'''<div id="privacy"><h3>Privacy e cookie</h3>
+        <p>MondoSkills usa Google Analytics 4 per contare le visite, <strong>solo se dai il consenso</strong> dall'avviso che compare alla prima visita. Niente pubblicità e niente profilazione. Se rifiuti, il sito funziona allo stesso modo e non salva alcun cookie di statistica.</p>
+        <p>Puoi cambiare la tua scelta quando vuoi con <button type="button" class="piede-preferenze" data-consenso style="color:inherit">Preferenze cookie</button>. Tutti i dettagli sono nell'<a href="/privacy/">informativa sulla privacy e sui cookie</a>.</p></div>'''
+else:
+    RIQUADRO_PRIVACY = '''<div id="privacy"><h3>Privacy</h3>
+        <p>MondoSkills non usa cookie, non usa strumenti di statistica o di profilazione e non raccoglie dati personali. Caratteri, immagini e dati sono ospitati sul sito stesso: la pagina non chiama servizi di terzi.</p>
+        <p>Il sito è pubblicato con GitHub Pages: come indicato nell'<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">informativa di GitHub</a>, GitHub registra l'indirizzo IP dei visitatori per motivi di sicurezza. Il tasto «Copia» usa solo gli appunti del tuo dispositivo. <a href="/privacy/">Leggi l'informativa</a>.</p></div>'''
+
+
 def testa(titolo, desc, percorso, ld, extra=''):
     url = SITO + percorso
     return f'''<meta charset="utf-8">
@@ -99,7 +119,7 @@ def testa(titolo, desc, percorso, ld, extra=''):
 <link rel="preload" href="/caratteri/jost-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/caratteri/caratteri.css">
 <link rel="stylesheet" href="/stile.css">
-{extra}<meta property="og:type" content="website">
+{CONSENSO}{extra}<meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:site_name" content="MondoSkills">
 <meta property="og:title" content="{e(titolo)}">
@@ -158,11 +178,12 @@ def home():
     t = t.replace('__TESTA__', testa(TITOLO_HOME, DESC_HOME, '/', ld,
                                      '<link rel="preload" href="/logo.png" as="image" fetchpriority="high">\n'
                                      '<link rel="preload" href="/dati.json" as="fetch" crossorigin>\n'))
+    t = t.replace('__PRIVACY__', RIQUADRO_PRIVACY)
     t = t.replace('__NOSCRIPT__', nos).replace('__LINK_CATEGORIE__', link_categorie())
     t = t.replace('__TECHSY__', json.dumps(TECHSY, ensure_ascii=False)).replace('__AVVIO__', avvio)
     if not t.rstrip().endswith('</html>'):
         t = t.rstrip() + '\n</body>\n</html>\n'
-    for segnaposto in ('__TESTA__', '__NOSCRIPT__', '__LINK_CATEGORIE__', '__TECHSY__', '__AVVIO__'):
+    for segnaposto in ('__TESTA__', '__PRIVACY__', '__NOSCRIPT__', '__LINK_CATEGORIE__', '__TECHSY__', '__AVVIO__'):
         assert segnaposto not in t, segnaposto
     scrivi('index.html', t)
 
@@ -239,6 +260,75 @@ def categoria(c):
     scrivi(f'categoria/{sl}/index.html', pagina(titolo, desc, f'/categoria/{sl}/', ld, corpo))
 
 
+# ---------- privacy ----------
+def privacy():
+    hosting = ('<p>Il sito è pubblicato con GitHub Pages, servizio di GitHub, Inc. Come indicato nell\'<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">informativa di GitHub</a>, '
+               'GitHub registra l\'indirizzo IP dei visitatori per motivi di sicurezza del servizio. Caratteri, immagini e dati del catalogo sono ospitati sul sito stesso. '
+               'Il tasto «Copia» usa solo gli appunti del tuo dispositivo e non invia nulla.</p>')
+    if not STATISTICHE:
+        testo = f'''<h2>In breve</h2>
+<p>MondoSkills non usa cookie, non usa strumenti di statistica o di profilazione e non raccoglie dati personali.</p>
+<h2>Pubblicazione del sito</h2>
+{hosting}
+<p>Per segnalazioni puoi usare la <a href="https://github.com/GuidoCostalonga/mondoskills/issues/new">pagina delle segnalazioni</a> del progetto.</p>'''
+    else:
+        testo = f'''<h2>In breve</h2>
+<ul>
+<li>Uso <strong>Google Analytics 4</strong> per contare le visite e capire quali pagine sono più utili, <strong>solo se dai il consenso</strong>.</li>
+<li>Prima del tuo «sì» non viene salvato alcun cookie di statistica e non viene caricato alcun codice di Google.</li>
+<li>Niente pubblicità, niente profilazione, nessuna vendita di dati.</li>
+<li>Puoi cambiare idea in ogni momento: <button type="button" class="piede-preferenze" data-consenso style="color:inherit">apri le preferenze cookie</button>.</li>
+</ul>
+
+<h2>1. Titolare del trattamento</h2>
+<p>Guido Costalonga, Roveredo in Piano (Pordenone). Per qualsiasi richiesta sulla privacy scrivi a <a href="mailto:{e(EMAIL_PRIVACY)}">{e(EMAIL_PRIVACY)}</a>.</p>
+
+<h2>2. Quali dati e perché</h2>
+<p><strong>Dati di navigazione.</strong> {hosting[3:-4]}</p>
+<p><strong>Statistiche di visita, solo con il tuo consenso.</strong> Google Analytics 4 raccoglie: un identificativo casuale salvato nei cookie, le pagine visitate e il tempo di permanenza, la pagina di provenienza, il tipo di dispositivo, il sistema operativo e il programma di navigazione, la lingua, il paese e la città approssimativa ricavati dall'indirizzo IP. Secondo Google, Google Analytics 4 non registra e non conserva gli indirizzi IP. Uso questi dati solo in forma aggregata, per sapere quante persone visitano il sito e quali contenuti servono di più.</p>
+<p>Ho disattivato Google Signals e la personalizzazione degli annunci: i dati non servono a fini pubblicitari e non vengono collegati al tuo eventuale account Google.</p>
+
+<h2>3. Base giuridica</h2>
+<p>Il tuo consenso, ai sensi dell'articolo 6, paragrafo 1, lettera a), del RGPD (Regolamento generale sulla protezione dei dati, Regolamento UE 2016/679) e dell'articolo 122 del Codice in materia di protezione dei dati personali (decreto legislativo 30 giugno 2003, n. 196). Il consenso è facoltativo: se rifiuti, il sito funziona allo stesso modo.</p>
+
+<h2>4. Cookie e strumenti usati</h2>
+<div class="tabella-scorre"><table>
+<thead><tr><th>Nome</th><th>Fornitore</th><th>A cosa serve</th><th>Durata</th><th>Consenso</th></tr></thead>
+<tbody>
+<tr><td><code>ms-consenso</code> (memoria locale del programma di navigazione)</td><td>MondoSkills</td><td>Ricorda la tua scelta sull'avviso, per non riproportelo a ogni pagina</td><td>6 mesi</td><td>Non serve: è tecnico</td></tr>
+<tr><td><code>_ga</code></td><td>Google</td><td>Distingue i visitatori con un identificativo casuale</td><td>6 mesi</td><td>Sì</td></tr>
+<tr><td><code>_ga_{e(GA4_ID[2:])}</code></td><td>Google</td><td>Conserva lo stato della visita in corso</td><td>6 mesi</td><td>Sì</td></tr>
+</tbody></table></div>
+<p>Dopo 6 mesi l'avviso ti viene riproposto, sia che tu abbia accettato sia che tu abbia rifiutato.</p>
+
+<h2>5. Chi riceve i dati</h2>
+<p>Google Ireland Limited, Gordon House, Barrow Street, Dublino 4, Irlanda, che fornisce Google Analytics come responsabile del trattamento. I dati possono essere trasferiti negli Stati Uniti a Google LLC, che aderisce al Quadro UE USA per la protezione dei dati personali (EU U.S. Data Privacy Framework), riconosciuto adeguato dalla Commissione europea con la decisione di esecuzione (UE) 2023/1795 del 10 luglio 2023. Informazioni di Google: <a href="https://policies.google.com/privacy?hl=it">informativa sulla privacy</a> e <a href="https://policies.google.com/technologies/partner-sites?hl=it">uso dei dati sui siti che usano i servizi Google</a>.</p>
+<p>Non cedo né vendo i dati a nessuno.</p>
+
+<h2>6. Per quanto tempo</h2>
+<p>I dati di Google Analytics collegati all'identificativo del visitatore sono conservati per <strong>2 mesi</strong>, poi vengono cancellati automaticamente; restano solo i totali aggregati e anonimi. I cookie durano al massimo 6 mesi.</p>
+
+<h2>7. I tuoi diritti</h2>
+<p>Puoi chiedere in ogni momento l'accesso ai tuoi dati, la rettifica, la cancellazione, la limitazione del trattamento, la portabilità e opporti al trattamento (articoli dal 15 al 22 del RGPD), scrivendo a <a href="mailto:{e(EMAIL_PRIVACY)}">{e(EMAIL_PRIVACY)}</a>. Puoi revocare il consenso quando vuoi dalle <button type="button" class="piede-preferenze" data-consenso style="color:inherit">preferenze cookie</button>: la revoca non rende illecito quanto fatto prima (articolo 7, paragrafo 3, del RGPD). Se ritieni che i tuoi dati siano trattati in modo non corretto, puoi presentare reclamo al <a href="https://www.garanteprivacy.it/">Garante per la protezione dei dati personali</a> (articolo 77 del RGPD).</p>
+<p>Puoi anche bloccare Google Analytics su tutti i siti con il <a href="https://tools.google.com/dlpage/gaoptout?hl=it">componente aggiuntivo di Google</a> per il programma di navigazione.</p>'''
+    corpo = f'''<main>
+<section class="apertura cat-apertura gutter"><div class="interno testa">
+  <p class="briciole"><a href="/">MondoSkills</a> › Privacy</p>
+  <h1>Privacy e cookie</h1>
+  <p class="sottotitolo">Informativa ai sensi dell'articolo 13 del RGPD</p>
+</div></section>
+<section class="testo-legale gutter"><div class="interno">
+{testo}
+<p class="sezione__nota" style="margin-top:28px">Ultimo aggiornamento: {AGGIORNATO_ESTESO}.</p>
+</div></section>
+</main>'''
+    titolo = 'Privacy e cookie | MondoSkills'
+    desc = 'Informativa sulla privacy e sui cookie di MondoSkills: quali dati raccoglie il sito, perché e come cambiare le tue scelte.'
+    ld = [SITO_LD, {'@type': 'WebPage', 'name': titolo, 'description': desc, 'url': f'{SITO}/privacy/',
+                    'inLanguage': 'it-IT', 'isPartOf': {'@id': f'{SITO}/#sito'}, 'dateModified': AGGIORNATO}]
+    scrivi('privacy/index.html', pagina(titolo, desc, '/privacy/', ld, corpo))
+
+
 def errore404():
     corpo = f'''<main>
 <section class="apertura errore404 gutter"><div class="interno testa">
@@ -256,7 +346,8 @@ def errore404():
 
 
 def sitemap():
-    voci = [('/', '1.0')] + [(f'/categoria/{SLUG_CAT[c]}/', '0.8') for c in CATEGORIE]
+    voci = ([('/', '1.0')] + [(f'/categoria/{SLUG_CAT[c]}/', '0.8') for c in CATEGORIE]
+            + [('/privacy/', '0.3')])
     righe = ''.join(f'  <url><loc>{SITO}{p}</loc><lastmod>{AGGIORNATO}</lastmod><priority>{pr}</priority></url>\n'
                     for p, pr in voci)
     scrivi('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -266,9 +357,11 @@ def sitemap():
 
 if __name__ == '__main__':
     shutil.copyfile(os.path.join(RADICE, 'sorgenti/stile-base.css'), os.path.join(RADICE, 'stile.css'))
+    shutil.copyfile(os.path.join(RADICE, 'sorgenti/consenso.js'), os.path.join(RADICE, 'consenso.js'))
     home()
     for c in CATEGORIE:
         categoria(c)
+    privacy()
     errore404()
     urls = sitemap()
     print(f'Generate {len(urls)} pagine indicizzabili, 404.html e sitemap.xml')
