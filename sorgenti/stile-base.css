@@ -328,3 +328,27 @@ button,a,select,summary{-webkit-tap-highlight-color:rgba(222,116,138,.35);touch-
 .altre-cat{padding-block:40px}
 .errore404 .testa{padding-block:60px 50px}
 @media (max-width:640px){.elenco{grid-template-columns:minmax(0,1fr)}.voce-skill h3{font-size:1.3rem}}
+
+/* Avviso del consenso alle statistiche: fascia nera in basso, due tasti di pari peso */
+.consenso{position:fixed;left:0;right:0;bottom:0;z-index:300;background:var(--nero-pieno);color:var(--bianco);border-top:4px solid var(--rosa);padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));max-height:80vh;overflow-y:auto}
+.consenso[hidden]{display:none}
+.consenso .interno{position:relative;max-width:900px}
+.consenso h2{color:var(--rosa);font-size:1.7rem;font-weight:400;margin:0 40px 8px 0}
+.consenso p{margin:0 0 14px;font-size:.98rem;max-width:72ch}
+.consenso a{color:var(--rosa)}
+.consenso__tasti{display:flex;flex-wrap:wrap;gap:12px}
+.consenso__tasti .grosso{background:var(--rosa);color:var(--nero);min-width:140px;justify-content:center}
+.consenso__tasti .grosso:hover{background:var(--bianco)}
+.consenso__x{position:absolute;top:-6px;right:0;background:none;border:0;color:var(--rosa);font-size:2rem;line-height:1;cursor:pointer;padding:4px 8px}
+.piede-preferenze{background:none;border:0;padding:0;color:var(--rosa);font:inherit;letter-spacing:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px;cursor:pointer}
+@media (max-width:600px){.consenso__tasti .grosso{flex:1 1 0;min-width:0}}
+
+/* Pagina della privacy */
+.testo-legale{background:var(--bianco);padding-block:40px}
+.testo-legale .interno{max-width:820px}
+.testo-legale h2{font-size:2rem;font-weight:400;margin:28px 0 10px}
+.testo-legale p,.testo-legale li{max-width:72ch}
+.testo-legale table{border-collapse:collapse;width:100%;font-size:.95rem;margin:10px 0}
+.testo-legale th,.testo-legale td{border:1px solid rgba(35,31,32,.25);padding:8px 10px;text-align:left;vertical-align:top}
+.testo-legale th{background:var(--rosa-chiaro)}
+.tabella-scorre{overflow-x:auto}
