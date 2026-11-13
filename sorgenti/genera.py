@@ -5,7 +5,7 @@ Uso, dalla cartella principale del repository:
     python3 sorgenti/genera.py
 
 Produce: index.html, stile.css, consenso.js, categoria/<nome>/index.html, privacy/index.html,
-404.html, sitemap.xml.
+utility/index.html, 404.html, sitemap.xml.
 """
 import collections
 import html
@@ -332,6 +332,119 @@ def privacy():
     scrivi('privacy/index.html', pagina(titolo, desc, '/privacy/', ld, corpo))
 
 
+# ---------- utility ----------
+STILE_UTILITY = """<style>
+.ut-cerca{background:var(--bianco);padding-block:26px 8px;border-bottom:1px solid rgba(35,31,32,.15)}
+.ut-cerca .interno{max-width:980px}
+.ut-salti{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.ut-salti a{text-decoration:none}
+.ut-conta{font-family:var(--f-titolo);font-size:1.3rem;text-transform:uppercase;margin:6px 0 8px}
+.ut-conta b{color:var(--rosa-cupo);font-variant-numeric:tabular-nums}
+.ut-sezione{padding-block:40px;background:var(--bianco);scroll-margin-top:96px}
+.ut-sezione.ut-alt{background:var(--rosa-chiaro)}
+.ut-sezione h2{font-size:clamp(1.9rem,4vw,2.8rem);text-shadow:var(--ombra-testo)}
+.ut-sezione h2 small{display:block;font-family:var(--f-testo);text-transform:none;font-size:.9rem;font-weight:600;letter-spacing:.04em;color:var(--grigio);margin-top:8px;text-shadow:none}
+.ut-intro{max-width:72ch;margin:12px 0 22px}
+.ut-voci{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.ut-voci a{display:flex;flex-direction:column;gap:3px;height:100%;background:var(--bianco);border:2px solid var(--nero);border-radius:var(--raggio);padding:11px 14px;text-decoration:none;min-width:0}
+.ut-voci a:hover{background:var(--nero);color:var(--rosa)}
+.ut-voci a:hover span,.ut-voci a:hover code{color:var(--bianco)}
+.ut-voci b{font-weight:700;font-size:1.02rem;line-height:1.25;overflow-wrap:anywhere}
+.ut-voci span{font-size:.92rem;line-height:1.35}
+.ut-voci code{font-family:var(--f-codice);font-size:.74rem;color:var(--grigio);overflow-wrap:anywhere;margin-top:auto;padding-top:4px}
+.ut-vuoto{display:none;padding-block:40px;background:var(--bianco);text-align:center}
+@media (max-width:820px){.ut-voci{grid-template-columns:1fr}}
+</style>
+"""
+
+SCRIPT_UTILITY = """<script>
+(function(){
+  var campo=document.getElementById('ut-q'),conta=document.getElementById('ut-n'),vuoto=document.getElementById('ut-vuoto');
+  var sezioni=[].slice.call(document.querySelectorAll('.ut-sezione'));
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');}
+  function filtra(){
+    var q=norm(campo.value.trim()).split(/\\s+/).filter(Boolean),tot=0;
+    sezioni.forEach(function(s){
+      var visibili=0,titolo=norm(s.querySelector('h2').textContent);
+      [].forEach.call(s.querySelectorAll('li'),function(li){
+        var t=titolo+' '+norm(li.textContent),ok=q.every(function(p){return t.indexOf(p)>-1;});
+        li.hidden=!ok;if(ok)visibili++;
+      });
+      s.hidden=!visibili;tot+=visibili;
+    });
+    conta.textContent=tot.toLocaleString('it-IT');
+    vuoto.style.display=tot?'none':'block';
+  }
+  campo.addEventListener('input',filtra);
+})();
+</script>"""
+
+MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto',
+        'settembre', 'ottobre', 'novembre', 'dicembre']
+
+
+def dominio(u):
+    return re.sub(r'^www\.', '', re.sub(r'^[a-z]+://', '', u).split('/')[0])
+
+
+def utility():
+    U = json.loads(leggi('sorgenti/utility.json'))
+    F = U['fonte']
+    sezioni = [(s, [v for v in s['voci'] if not v.get('sospesa')]) for s in U['sezioni']]
+    tot = sum(len(v) for _, v in sezioni)
+    a, m, g = F['letta'].split('-')
+    letta_estesa = f'{int(g)} {MESI[int(m) - 1]} {a}'
+    salti = ''.join(f'<a class="chip" href="#{slug(s["titolo"])}">{e(s["titolo"])} ({len(v)})</a>' for s, v in sezioni)
+    blocchi = ''
+    for i, (s, voci) in enumerate(sezioni):
+        righe = ''.join(
+            f'<li><a href="{e(v["url"])}" rel="noopener noreferrer nofollow" target="_blank"><b>{e(v["nome"])}</b>'
+            + (f'<span>{e(v["it"])}</span>' if v.get('it') else '')
+            + f'<code>{e(dominio(v["url"]))}</code></a></li>' for v in voci)
+        blocchi += f"""<section class="ut-sezione{' ut-alt' if i % 2 else ''} gutter" id="{slug(s["titolo"])}"><div class="interno">
+  <h2>{e(s["titolo"])}<small>Nella raccolta originale: {e(s["originale"])}. Collegamenti: {len(voci)}</small></h2>
+  <p class="ut-intro">{e(s["intro"])}</p>
+  <ul class="ut-voci">{righe}</ul>
+</div></section>
+"""
+    corpo = f"""<main>
+<section class="apertura cat-apertura gutter"><div class="interno testa">
+  <p class="briciole"><a href="/">MondoSkills</a> › Strumenti utili</p>
+  <h1>Strumenti utili</h1>
+  <p class="sottotitolo">La raccolta OSINT4ALL in italiano</p>
+  <p class="sotto">{num(tot)} collegamenti in {len(sezioni)} sezioni per l'OSINT (Open Source Intelligence, la ricerca di informazioni su fonti aperte e pubbliche). Traduzione italiana della raccolta <a href="{e(F["url"])}" rel="noopener noreferrer">{e(F["nome"])}</a>, curata da {e(F["autore"])} su start.me.</p>
+</div></section>
+<section class="ut-cerca gutter"><div class="interno">
+  <div class="cerca"><label for="ut-q">Cerca</label><input id="ut-q" type="search" placeholder="Nome, argomento o indirizzo" autocomplete="off"></div>
+  <nav class="ut-salti" aria-label="Sezioni della raccolta">{salti}</nav>
+  <p class="ut-conta" aria-live="polite"><b id="ut-n">{num(tot)}</b> collegamenti</p>
+</div></section>
+{blocchi}<section class="ut-vuoto gutter" id="ut-vuoto"><div class="interno"><h2>Nessun risultato</h2><p>Prova con una parola diversa oppure cancella la ricerca.</p></div></section>
+<section class="sezione sezione--scura gutter" id="fonte"><div class="interno">
+  <h2 class="sezione__titolo">Fonte e avvertenze</h2>
+  <div class="avvertenze avvertenze--scure" style="margin-top:26px">
+    <div><h3>Da dove viene</h3>
+      <p>Sezioni e collegamenti sono quelli della raccolta <a href="{e(F["url"])}" rel="noopener noreferrer">{e(F["nome"])}</a>, curata da {e(F["autore"])} su start.me e letta il {letta_estesa}. Il merito della selezione è dell'autore.</p>
+      <p>MondoSkills ha tradotto in italiano i titoli delle sezioni e i nomi descrittivi. I nomi propri di siti e programmi restano invariati.</p></div>
+    <div><h3>Come usarla</h3>
+      <p>I siti collegati sono di terzi: MondoSkills non li gestisce e non ne garantisce contenuti, sicurezza e disponibilità. Alcuni collegamenti possono non essere più attivi.</p>
+      <p>Usa questi strumenti nel rispetto della legge e della riservatezza delle persone: cercare informazioni pubbliche è lecito, usarle per molestare, ingannare o danneggiare qualcuno no.</p></div>
+  </div>
+</div></section>
+</main>
+{SCRIPT_UTILITY}"""
+    titolo = 'Strumenti utili: la raccolta OSINT4ALL in italiano | MondoSkills'
+    desc = (f'{num(tot)} collegamenti per la ricerca su fonti aperte, in {len(sezioni)} sezioni: contatti temporanei, '
+            'ricerca di persone, motori di ricerca, mappe e dati geografici. Traduzione italiana di OSINT4ALL.')
+    ld = [SITO_LD, {'@type': 'CollectionPage', 'name': titolo, 'description': desc, 'url': f'{SITO}/utility/',
+                    'inLanguage': 'it-IT', 'isPartOf': {'@id': f'{SITO}/#sito'}, 'dateModified': F['letta'],
+                    'isBasedOn': F['url'], 'numberOfItems': tot},
+          {'@type': 'BreadcrumbList', 'itemListElement': [
+              {'@type': 'ListItem', 'position': 1, 'name': 'MondoSkills', 'item': f'{SITO}/'},
+              {'@type': 'ListItem', 'position': 2, 'name': 'Strumenti utili', 'item': f'{SITO}/utility/'}]}]
+    scrivi('utility/index.html', pagina(titolo, desc, '/utility/', ld, corpo, STILE_UTILITY))
+
+
 def errore404():
     corpo = f'''<main>
 <section class="apertura errore404 gutter"><div class="interno testa">
@@ -350,7 +463,7 @@ def errore404():
 
 def sitemap():
     voci = ([('/', '1.0')] + [(f'/categoria/{SLUG_CAT[c]}/', '0.8') for c in CATEGORIE]
-            + [('/privacy/', '0.3')])
+            + [('/utility/', '0.6'), ('/privacy/', '0.3')])
     righe = ''.join(f'  <url><loc>{SITO}{p}</loc><lastmod>{AGGIORNATO}</lastmod><priority>{pr}</priority></url>\n'
                     for p, pr in voci)
     scrivi('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -365,6 +478,7 @@ if __name__ == '__main__':
     for c in CATEGORIE:
         categoria(c)
     privacy()
+    utility()
     errore404()
     urls = sitemap()
     print(f'Generate {len(urls)} pagine indicizzabili, 404.html e sitemap.xml')
