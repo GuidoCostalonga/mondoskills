@@ -10,6 +10,7 @@ Pubblicato con GitHub Pages sul dominio https://mondoskills.it.
 | `index.html` | Pagina principale con ricerca e filtri (generata) |
 | `dati.json` | Le 7.600 skill, caricate dalla pagina principale |
 | `categoria/<nome>/` | Una pagina statica per ciascuna delle 26 categorie (generate) |
+| `utility/` | Raccolta OSINT4ALL tradotta in italiano (generata da `sorgenti/utility.json`) |
 | `404.html`, `sitemap.xml` | Pagina di errore e mappa del sito (generate) |
 | `stile.css`, `caratteri/`, `logo.png`, `sigillo.png` | Grafica; i caratteri sono ospitati sul sito |
 | `sorgenti/modello.html`, `sorgenti/stile-base.css` | Modello della pagina principale e foglio di stile |
